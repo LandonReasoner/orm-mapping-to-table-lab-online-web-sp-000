@@ -23,7 +23,16 @@ class Student
   def self.drop_table 
     sql = "DROP TABLE IF EXISTS students"
     DB[:conn].execute(sql)
-  end 
+  end
+  
+  def save 
+    sql = <<-SQL 
+    INSERT INTO students (name, grade)
+    VALUES (?, ?)
+    SQL
+    
+    DB[:conn].execute(sql, self.name, self.grade)
+    @id = DB[:conn].execute("SELECT last_insert_rowid9")
 
   # Remember, you can access your database connection anywhere in this class
   #  with DB[:conn]  
